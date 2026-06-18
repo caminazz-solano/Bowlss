@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Constructor interactivo para crear tu propio Bowlss.">
+  <title>Bowlss | Personaliza tu Bowl</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"><link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header"><nav class="container-soft nav-wrap" aria-label="Navegación principal"><a href="index.html"><img class="brand-logo" src="assets/logobowlss.jpg" alt="Bowlss"></a><div class="nav-links"><a class="nav-link" href="index.html">Inicio</a><a class="nav-link" href="index.html#nosotros">Nosotros</a><a class="nav-link" href="menu.html">Menú</a><a class="nav-link" aria-current="page" href="builder.html">Personaliza tu Bowlss</a><a class="nav-link" href="locations.html">Locales</a></div><div class="nav-actions"><button class="icon-btn" data-theme-toggle aria-label="Cambiar tema"><i class="fa-solid fa-circle-half-stroke"></i></button><a class="btn btn-sun register-link" href="profile.html">Regístrate</a><button class="btn btn-primary" data-cart-open><i class="fa-solid fa-cart-shopping"></i><span class="cart-label">Carrito</span></button><button class="icon-btn mobile-toggle" data-nav-toggle aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button></div></nav></header>
+  <main class="page-shell section">
+    <div class="container-soft builder-layout">
+      <section>
+        <h1 class="section-title text-left">Crea tu Bowlss</h1>
+        <div class="panel steps mt-8" data-steps></div>
+        <div class="ingredient-grid" data-ingredients></div>
+      </section>
+      <aside class="panel summary-panel" data-aos="fade-left">
+        <h2 class="text-4xl display text-[#c94c28]">Your Bowl</h2>
+        <div class="mt-8" data-summary></div>
+        <button class="btn btn-primary w-full mt-8" data-add-custom>Agregar mi Creación al Carrito</button>
+        <p class="mt-6 font-black text-center opacity-70"><i class="fa-regular fa-clock"></i> Freshly prepared in 15 mins</p>
+      </aside>
+    </div>
+  </main>
+  <div class="drawer-backdrop" data-cart-close></div><aside class="cart-drawer" aria-label="Tu pedido"><div class="cart-head"><h2 class="text-4xl display">Tu Pedido</h2><button class="icon-btn" data-cart-close aria-label="Cerrar carrito"><i class="fa-solid fa-xmark"></i></button></div><div class="cart-items" data-cart-items></div><div class="cart-foot"><div class="summary-row"><span>Subtotal</span><strong data-cart-subtotal>Bs 0.00</strong></div><div class="summary-row total"><span>Total</span><strong data-cart-total>Bs 0.00</strong></div><button class="btn btn-primary w-full mt-4">Proceder al Pago <i class="fa-solid fa-arrow-right"></i></button></div></aside>
+  <footer class="site-footer"><div class="container-soft footer-grid"><div><img class="footer-logo" src="assets/logobowlssfooter.jpg" alt="Bowlss"><p>Crea tu mezcla mediterránea con ingredientes de temporada.</p></div><div><h3 class="font-black text-[#efbd42] mb-4">Explore</h3><div class="footer-links"><a href="menu.html">Our Menu</a><a href="locations.html">Locales</a><a href="profile.html">Gift Cards</a></div></div><div><h3 class="font-black text-[#efbd42] mb-4">Legal</h3><div class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div></div><div><h3 class="font-black text-[#efbd42] mb-4">Social</h3><div class="socials"><a class="icon-btn" href="#"><i class="fa-solid fa-globe"></i></a><a class="icon-btn" href="#"><i class="fa-solid fa-share-nodes"></i></a></div></div></div><p class="container-soft copyright">© <span data-year></span> Bowlss. Golden Hour Dining.</p></footer>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script><script src="script.js"></script><script src="builder.js"></script>
+</body>
+</html>
