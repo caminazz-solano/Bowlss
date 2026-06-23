@@ -65,6 +65,37 @@ function renderCart() {
   totalEl.textContent = formatMoney(subtotal);
 }
 
+function confirmCheckout(button) {
+  const cart = getCart();
+  if (!cart.length) return;
+
+  const itemsEl = document.querySelector("[data-cart-items]");
+  const subtotalEl = document.querySelector("[data-cart-subtotal]");
+  const totalEl = document.querySelector("[data-cart-total]");
+  const originalLabel = button.innerHTML;
+
+  itemsEl.innerHTML = `
+    <div class="text-center py-16">
+      <i class="fa-solid fa-circle-check" style="font-size:4rem;color:#2f7d4f;"></i>
+      <p class="display text-3xl mt-6">PEDIDO CONFIRMADO</p>
+      <p class="lead mt-3">Gracias por tu compra. Tu Bowlss está en camino. ☀️</p>
+    </div>
+  `;
+  subtotalEl.textContent = formatMoney(0);
+  totalEl.textContent = formatMoney(0);
+  button.innerHTML = `<i class="fa-solid fa-check"></i> Pedido Confirmado`;
+  button.disabled = true;
+
+  localStorage.setItem("bowlssCart", JSON.stringify([]));
+
+  setTimeout(() => {
+    document.body.classList.remove("cart-open");
+    button.disabled = false;
+    button.innerHTML = originalLabel;
+    renderCart();
+  }, 2600);
+}
+
 function initGlobalUI() {
   const year = document.querySelector("[data-year]");
   if (year) year.textContent = new Date().getFullYear();
@@ -93,11 +124,14 @@ function initGlobalUI() {
   document.addEventListener("click", event => {
     const qtyBtn = event.target.closest("[data-qty]");
     const removeBtn = event.target.closest("[data-remove]");
+    const checkoutBtn = event.target.closest("[data-checkout]");
+
     if (qtyBtn) {
       const cart = getCart().map(item => item.id === qtyBtn.dataset.qty ? { ...item, qty: Math.max(1, item.qty + Number(qtyBtn.dataset.change)) } : item);
       saveCart(cart);
     }
     if (removeBtn) saveCart(getCart().filter(item => item.id !== removeBtn.dataset.remove));
+    if (checkoutBtn) confirmCheckout(checkoutBtn);
   });
 
   renderCart();
@@ -118,7 +152,77 @@ function initHeroSlider() {
   setInterval(() => show((index + 1) % slides.length), 5200);
 }
 
+function initLocationsPage() {
+  const frame = document.querySelector("[data-map-frame]");
+  if (!frame) return;
+
+  let zoom = 16;
+  let query = "Av. Ballivián El Prado, Cochabamba, Bolivia";
+
+  const updateMap = () => {
+    frame.src = `https://www.google.com/maps?q=${encodeURIComponent(query)}&z=${zoom}&output=embed`;
+  };
+
+  document.querySelectorAll("[data-zoom]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      zoom = Math.min(20, Math.max(3, zoom + Number(btn.dataset.zoom)));
+      updateMap();
+    });
+  });
+
+  const searchInput = document.querySelector("[data-location-search]");
+  if (searchInput) {
+    searchInput.addEventListener("keydown", event => {
+      if (event.key === "Enter" && searchInput.value.trim()) {
+        event.preventDefault();
+        query = searchInput.value.trim();
+        updateMap();
+      }
+    });
+  }
+
+  const locateBtn = document.querySelector("[data-locate-me]");
+  if (locateBtn) {
+    locateBtn.addEventListener("click", () => {
+      if (!navigator.geolocation) {
+        alert("Tu navegador no soporta geolocalización.");
+        return;
+      }
+      const original = locateBtn.innerHTML;
+      locateBtn.disabled = true;
+      locateBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Buscando...`;
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          query = `${position.coords.latitude},${position.coords.longitude}`;
+          zoom = 15;
+          updateMap();
+          locateBtn.disabled = false;
+          locateBtn.innerHTML = original;
+        },
+        () => {
+          alert("No pudimos obtener tu ubicación. Revisa los permisos del navegador.");
+          locateBtn.disabled = false;
+          locateBtn.innerHTML = original;
+        }
+      );
+    });
+  }
+
+  document.querySelectorAll("[data-reserve]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const original = btn.innerHTML;
+      btn.innerHTML = `<i class="fa-solid fa-check"></i> ¡Reserva Confirmada!`;
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.innerHTML = original;
+        btn.disabled = false;
+      }, 2600);
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initGlobalUI();
   initHeroSlider();
+  initLocationsPage();
 });
